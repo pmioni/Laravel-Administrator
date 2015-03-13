@@ -269,7 +269,7 @@ class Config extends ConfigBase implements ConfigInterface {
 	 *
 	 * @return \Illuminate\Database\Eloquent\Model
 	 */
-	public function updateModel($model, FieldFactory $fieldFactory, ActionFactory $actionFactory)
+	public function updateModel($model, FieldFactory $fieldFactory, ActionFactory $actionFactory, $id=null)
 	{
 		//set the data model to the active model
 		$this->setDataModel($model->find($model->getKey()));
@@ -281,7 +281,7 @@ class Config extends ConfigBase implements ConfigInterface {
 		}
 
 		//set up the model with the edit fields new data
-		$model->setAttribute('administrator_edit_fields', $fieldFactory->getEditFieldsArrays(true));
+		$model->setAttribute('administrator_edit_fields', $fieldFactory->getEditFieldsArrays(true, $id));
 
 		//set up the new actions data
 		$model->setAttribute('administrator_actions', $actionFactory->getActionsOptions(true));

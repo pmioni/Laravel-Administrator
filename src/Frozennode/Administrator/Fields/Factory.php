@@ -381,14 +381,26 @@ class Factory {
 	 *
 	 * @return array
 	 */
-	public function getEditFields($loadRelationships = true, $override = false)
+	public function getEditFields($loadRelationships = true, $override = false, $id = false)
 	{
 		if (!sizeof($this->editFields) || $override)
 		{
 			$this->editFields = array();
+			$editFieldsField = 'edit_fields';
+
+			$model = $this->config->getDataModel();
+
+			//If the model has parent_fields and no language, load the parent_fields instead
+			if($id !== false) {
+				$item = $model->find($id);
+				//dd($this->config->getOption('parent_fields'));
+				if($id === 0 || (is_array($this->config->getOption('parent_fields')) && $item->language_id === null)) {
+					$editFieldsField = 'parent_fields';
+				}
+			}
 
 			//iterate over each supplied edit field
-			foreach ($this->config->getOption('edit_fields') as $name => $options)
+			foreach ($this->config->getOption($editFieldsField) as $name => $options)
 			{
 				$fieldObject = $this->make($name, $options, $loadRelationships);
 				$this->editFields[$fieldObject->getOption('field_name')] = $fieldObject;
@@ -405,11 +417,11 @@ class Factory {
 	 *
 	 * @return array
 	 */
-	public function getEditFieldsArrays($override = false)
+	public function getEditFieldsArrays($override = false, $id = null)
 	{
 		$return = array();
 
-		foreach ($this->getEditFields(true, $override) as $fieldObject)
+		foreach ($this->getEditFields(true, $override, $id) as $fieldObject)
 		{
 			$return[$fieldObject->getOption('field_name')] = $fieldObject->getOptions();
 		}

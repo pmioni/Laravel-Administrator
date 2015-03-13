@@ -62,7 +62,7 @@ class AdminController extends Controller
 		$actionFactory = App::make('admin_action_factory');
 		$columnFactory = App::make('admin_column_factory');
 		$actionPermissions = $actionFactory->getActionPermissions();
-		$fields = $fieldFactory->getEditFields();
+		$fields = $fieldFactory->getEditFields(true, false, $itemId);
 
 		//if it's ajax, we just return the item information as json
 		if (Request::ajax())
@@ -72,7 +72,7 @@ class AdminController extends Controller
 
 			if ($model->exists)
 			{
-				$model = $config->updateModel($model, $fieldFactory, $actionFactory);
+				$model = $config->updateModel($model, $fieldFactory, $actionFactory, $itemId);
 			}
 
 			$response = $actionPermissions['view'] ? Response::json($model) : Response::json(array(
@@ -107,7 +107,7 @@ class AdminController extends Controller
 		$config = App::make('itemconfig');
 		$fieldFactory = App::make('admin_field_factory');
 		$actionFactory = App::make('admin_action_factory');
-		$save = $config->save(App::make('request'), $fieldFactory->getEditFields(), $actionFactory->getActionPermissions(), $id);
+		$save = $config->save(App::make('request'), $fieldFactory->getEditFields(true, false, $id), $actionFactory->getActionPermissions(), $id);
 
 		if (is_string($save))
 		{
@@ -123,12 +123,12 @@ class AdminController extends Controller
 
 			//grab the latest model data
 			$columnFactory = App::make('admin_column_factory');
-			$fields = $fieldFactory->getEditFields();
+			$fields = $fieldFactory->getEditFields(true, false, $id);
 			$model = $config->getModel($id, $fields, $columnFactory->getIncludedColumns($fields));
 
 			if ($model->exists)
 			{
-				$model = $config->updateModel($model, $fieldFactory, $actionFactory);
+				$model = $config->updateModel($model, $fieldFactory, $actionFactory, $id);
 			}
 
 			return Response::json(array(
@@ -277,12 +277,12 @@ class AdminController extends Controller
 		{
 			$fieldFactory = App::make('admin_field_factory');
 			$columnFactory = App::make('admin_column_factory');
-			$fields = $fieldFactory->getEditFields();
+			$fields = $fieldFactory->getEditFields(true, false, $id);
 			$model = $config->getModel($id, $fields, $columnFactory->getIncludedColumns($fields));
 
 			if ($model->exists)
 			{
-				$model = $config->updateModel($model, $fieldFactory, $actionFactory);
+				$model = $config->updateModel($model, $fieldFactory, $actionFactory, $id);
 			}
 
 			$response = array('success' => true, 'data' => $model->toArray());

@@ -22,8 +22,8 @@ View::composer('administrator::index', function($view)
 	$view->config = $config;
 	$view->dataTable = $dataTable;
 	$view->primaryKey = $model->getKeyName();
-	$view->editFields = $fieldFactory->getEditFields();
-	$view->arrayFields = $fieldFactory->getEditFieldsArrays();
+	$view->editFields = $fieldFactory->getEditFields(true, false, $view->itemId);
+	$view->arrayFields = $fieldFactory->getEditFieldsArrays(false, $view->itemId);
 	$view->dataModel = $fieldFactory->getDataModel();
 	$view->columnModel = $columnFactory->getColumnOptions();
 	$view->actions = $actionFactory->getActionsOptions();
