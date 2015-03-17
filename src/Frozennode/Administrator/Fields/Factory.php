@@ -391,11 +391,13 @@ class Factory {
 			$model = $this->config->getDataModel();
 
 			//If the model has parent_fields and no language, load the parent_fields instead
-			if($id !== false) {
-				$item = $model->find($id);
-				//dd($this->config->getOption('parent_fields'));
-				if($id === 0 || (is_array($this->config->getOption('parent_fields')) && $item->language_id === null)) {
-					$editFieldsField = 'parent_fields';
+			if($this->config->hasOption('parent_fields')) {
+				if($id !== false) {
+					$item = $model->find($id);
+
+					if(($id == 0 && is_array($this->config->getOption('parent_fields'))) || (is_array($this->config->getOption('parent_fields')) && $item && $item->language_id === null)) {
+						$editFieldsField = 'parent_fields';
+					}
 				}
 			}
 
@@ -404,6 +406,23 @@ class Factory {
 			{
 				$fieldObject = $this->make($name, $options, $loadRelationships);
 				$this->editFields[$fieldObject->getOption('field_name')] = $fieldObject;
+			}
+
+			//Need to add fields that aren't used into the field options array with invisible set to false
+			if($this->config->hasOption('parent_fields')) {
+				if($editFieldsField == 'parent_fields') {
+					$notIncluded = array_diff_key($this->config->getOption('edit_fields'), $this->config->getOption('parent_fields'));
+				} else {
+					$notIncluded = array_diff_key($this->config->getOption('parent_fields'), $this->config->getOption('edit_fields'));
+				}
+
+				foreach ($notIncluded as $name => $options)
+				{
+					$options['visible'] = false;
+					$fieldObject = $this->make($name, $options, $loadRelationships);
+
+					$this->editFields[$fieldObject->getOption('field_name')] = $fieldObject;
+				}
 			}
 		}
 
@@ -417,7 +436,7 @@ class Factory {
 	 *
 	 * @return array
 	 */
-	public function getEditFieldsArrays($override = false, $id = null)
+	public function getEditFieldsArrays($override = false, $id = false)
 	{
 		$return = array();
 

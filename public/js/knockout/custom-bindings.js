@@ -1,5 +1,7 @@
 (function($){
 
+	window.ckcounts = {};
+
 	/**
 	 * For the item form transition
 	 */
@@ -534,7 +536,12 @@
 	ko.bindingHandlers.wysiwyg = {
 		init: function (element, valueAccessor, allBindingsAccessor, context)
 		{
-			var options = valueAccessor(),
+		/*	console.log("INIT");
+			var options = valueAccessor();
+			console.log($(element));
+
+			var editor = CKEDITOR.replace(element);*/
+		/*	var options = valueAccessor(),
 				value = ko.utils.unwrapObservable(options.value),
 				$element = $(element),
 				editor;
@@ -547,11 +554,7 @@
 				editor = editors[options.id];
 			else
 			{
-				$element.ckeditor({ 
-					language : language,
-					readOnly : !adminData.edit_fields[context.field_name].editable
-				});
-				
+				$element.ckeditor({ language : language });
 				editor = $element.ckeditorGet();
 				editors[options.id] = editor;
 			}
@@ -591,10 +594,50 @@
 		        	editor.destroy();
 		        	delete editors[options.id];
 	        	}
-	        });
+	        });*/
 		},
+
+
 		update: function (element, valueAccessor, allBindingsAccessor, context)
 		{
+			if(!ckcounts[element.id] || (ckcounts[element.id] && !ckcounts[element.id].blockReset)) {
+
+				// Adam Thomas: Worlds biggest hack. Dont ask and dont touch.
+				var options = valueAccessor();
+				$(element).html(ko.utils.unwrapObservable(options.value));
+				var config = {};
+
+				if(ckcounts[element.id] ) {
+					ckcounts[element.id].remove();
+				}
+
+
+				var ck = $('#ck-'+ko.utils.unwrapObservable(options).id);
+				if (ck.length < 1) {
+					ck = $("<div></div>").attr('id','ck-'+ko.utils.unwrapObservable(options).id);
+					$(element).after(ck);
+				}
+				var editor = CKEDITOR.appendTo( ck[0], config, ko.utils.unwrapObservable(options.value));
+				$(element).hide();
+				editor.on('change', function (o) {
+					ckcounts[element.id].blockReset = true;
+					$(element).html(o.editor.getData());
+					valueAccessor().value(o.editor.getData());
+				});
+				editor.on('loaded', function() {
+					window.admin.resizePage();
+				});
+
+
+				ckcounts[element.id] = ck;
+
+			}
+
+
+
+
+
+			/*
 			//handle programmatic updates to the observable
 			var options = valueAccessor(),
 				value = ko.utils.unwrapObservable(options.value),
@@ -622,8 +665,9 @@
 						editor.setData(value);
 
 				}, 50);
-			}
+			}*/
 		}
+
 	};
 
 	/**
@@ -646,26 +690,6 @@
 		}
 	 };
 
-	/**
-	 * The enumText binding converts a value and an options array to a "Label (value)" readable format
-	 */
-	ko.bindingHandlers.enumText = {
-		update: function (element, valueAccessor, allBindingsAccessor, viewModel)
-		{
-			var options = valueAccessor(),
-				value = options.value,
-				enumOptions = options.enumOptions;
-
-			for (var i = 0; i < enumOptions.length; i++) {
-				if(enumOptions[i].id == value) {
-					$(element).html( enumOptions[i].text + " (" + value + ")" );
-					return;
-				}
-			}
-
-			$(element).html(value);
-		}
-	};
 
 	/**
 	 * File uploader using plupload
@@ -694,8 +718,6 @@
 			viewModel[cacheName].init();
 
 			viewModel[cacheName].bind('FilesAdded', function(up, files) {
-
-				viewModel.freezeActions(true);
 
 				$(files).each(function(i, file) {
 					//parent.uploader.removeFile(file);
@@ -735,7 +757,6 @@
 					viewModel[cacheName].splice();
 					viewModel[cacheName].refresh();
 					$('div.plupload').css('z-index', 71);
-					viewModel.freezeActions(false);
 					admin.resizePage();
 				}, 200);
 			});

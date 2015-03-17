@@ -31,14 +31,6 @@
 		$dataTable: null,
 
 		/*
-		 * If this is true, the dataTable is scrollable instead of
-		 * skipping columns at the end
-		 *
-		 * @type bool
-		 */
-		dataTableScrollable: false,
-
-		/*
 		 * The pixel points where the columns are hidden
 		 *
 		 * @type object
@@ -171,11 +163,6 @@
 			 */
 			originalEditFields: [],
 
-			/* The original data when fetched from the server initially
-			 * object
-			 */
-			originalData: {},
-
 			/* The model edit fields
 			 * array
 			 */
@@ -302,7 +289,6 @@
 					complete: function()
 					{
 						self.freezeForm(false);
-						window.admin.resizePage();
 					},
 					success: function(response)
 					{
@@ -342,10 +328,6 @@
 					data: {_token: csrf},
 					dataType: 'json',
 					type: 'POST',
-					complete: function()
-					{
-						window.admin.resizePage();
-					},
 					success: function(response)
 					{
 						if (response.success)
@@ -396,7 +378,6 @@
 
 				//update all the info to the new item state
 				ko.mapping.updateData(self, self.model, self.model);
-				self.originalData = {};
 
 				//scroll to the top of the page
 				$('html, body').animate({scrollTop: 0}, 'fast')
@@ -479,9 +460,6 @@
 				self.actions(data.administrator_actions);
 				self.actionPermissions = data.administrator_action_permissions;
 
-				//set the original values
-				self.originalData = data;
-
 				//set the new options for relationships
 				$.each(adminData.edit_fields, function(ind, el)
 				{
@@ -539,6 +517,8 @@
 				this.itemLoadingId(null);
 				this.activeItem(null);
 				this.lastItem = null;
+
+				window.ckcounts = {};
 			},
 
 			/**
@@ -848,18 +828,6 @@
 				});
 
 				return filters;
-			},
-
-			/**
-			 * Determines if the provided field is dirty
-			 *
-			 * @param string
-			 *
-			 * @return bool
-			 */
-			fieldIsDirty: function(field)
-			{
-				return this.originalData[field] != this[field]();
 			},
 
 			/**
@@ -1403,9 +1371,6 @@
 			//resizing the window
 			$(window).resize(self.resizePage);
 
-			//mousedowning or keypressing anywhere should resize the page as well
-			$('body').on('mouseup keypress', self.resizePage);
-
 			//set up the history event callback
 			History.Adapter.bind(window,'statechange',function() {
 				var state = History.getState();
@@ -1513,42 +1478,17 @@
 		 */
 		resizePage: function()
 		{
-			setTimeout(function()
-			{
-				var winHeight = $(window).height(),
-					itemEditHeight = $('div.item_edit').outerHeight() + 50,
-					usedHeight = winHeight > itemEditHeight ? winHeight - 45 : itemEditHeight,
-					size = window.getComputedStyle(document.body, ':after').getPropertyValue('content');
+			var winHeight = $(window).height(),
+				itemEditHeight = $('form.edit_form').height() + 50,
+				usedHeight = winHeight > itemEditHeight ? winHeight - 45 : itemEditHeight,
+				size = window.getComputedStyle(document.body, ':after').getPropertyValue('content');
 
-				//resize the page height
-				$('#admin_page').css({minHeight: usedHeight});
+			//resize the page height
+			$('#admin_page').css({minHeight: usedHeight});
 
-				//resize or scroll the data table
-				if (window.admin) {
-					if (! window.admin.dataTableScrollable)
-						window.admin.resizeDataTable();
-					else
-					window.admin.scrollDataTable();
-				}
-			}, 50);
-		},
-
-		/**
-		 * Allows to scroll wide data tables (alternative to resizeDataTable)
-		 */
-		scrollDataTable: function()
-		{
-			if (!self.$tableContainer)
-			{
-				self.$tableContainer = $('div.table_container');
-				self.$dataTable = self.$tableContainer.find('table.results');
-			}
-
-			// exit if table is already wrapped
-			if (self.$dataTable.parent().hasClass('table_scrollable')) return true;
-
-			// wrap table within div.table_scrollable
-			self.$dataTable.wrap('<div class="table_scrollable"></div>')
+			//resize the data table
+			if (window.admin)
+				window.admin.resizeDataTable();
 		},
 
 		/**

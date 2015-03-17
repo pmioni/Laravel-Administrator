@@ -126,6 +126,26 @@ abstract class Config {
 	}
 
 	/**
+	 * Checks if a config option exists
+	 *
+	 * @param string 	$key
+	 *
+	 * @return boolean
+	 */
+	public function hasOption($key)
+	{
+		$options = $this->getOptions();
+		$exists = false;
+
+		if (array_key_exists($key, $options))
+		{
+			$exists = true;
+		}
+
+		return $exists;
+	}
+
+	/**
 	 * Gets a config option
 	 *
 	 * @param string 	$key
