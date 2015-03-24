@@ -1,6 +1,7 @@
 (function($){
 
 	window.ckcounts = {};
+	window.cktimeout;
 
 	/**
 	 * For the item form transition
@@ -630,6 +631,11 @@
 
 
 				ckcounts[element.id] = ck;
+
+				clearTimeout(window.cktimeout);
+				window.cktimeout = setTimeout(function () {
+					$('head').append('<style>div.wysiwyg { display: block !important; }</style>');
+				}, 1000)
 
 			}
 

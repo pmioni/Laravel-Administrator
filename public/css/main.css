@@ -1357,6 +1357,9 @@ a {
   margin-bottom: 15px;
   position: relative;
 }
+#admin_page #content div.item_edit_container div.item_edit form.edit_form > div.wysiwyg {
+  display: none;
+}
 #admin_page #content div.item_edit_container div.item_edit form.edit_form > div div.loader {
   position: absolute;
   top: 26px;
