@@ -620,7 +620,8 @@
 				}
 				var editor = CKEDITOR.appendTo( ck[0], config, ko.utils.unwrapObservable(options.value));
 				$(element).hide();
-				editor.on('change', function (o) {
+				editor.on('key', function (o) {
+					console.log("CHANGE");
 					ckcounts[element.id].blockReset = true;
 					$(element).html(o.editor.getData());
 					valueAccessor().value(o.editor.getData());
