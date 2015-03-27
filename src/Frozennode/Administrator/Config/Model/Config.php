@@ -318,7 +318,8 @@ class Config extends ConfigBase implements ConfigInterface {
 				return "You do not have permission to save this item";
 			}
 		}
-		else if (!$actionPermissions['update'] || !$actionPermissions['create'])
+		//else if (!$actionPermissions['update'] || !$actionPermissions['create'])
+		else if (!$actionPermissions['create'])
 		{
 			return "You do not have permission to create this item";
 		}
