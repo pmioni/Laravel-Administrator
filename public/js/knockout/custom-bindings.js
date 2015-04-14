@@ -2,6 +2,7 @@
 
 	window.ckcounts = {};
 	window.cktimeout;
+	window.firstInit = false;
 
 	/**
 	 * For the item form transition
@@ -601,7 +602,8 @@
 
 		update: function (element, valueAccessor, allBindingsAccessor, context)
 		{
-			if(!ckcounts[element.id] || (ckcounts[element.id] && !ckcounts[element.id].blockReset)) {
+
+			if((!ckcounts[element.id] && ko.utils.unwrapObservable(valueAccessor().value) !== '' ) || (ckcounts[element.id] && !ckcounts[element.id].blockReset)) {
 
 				// Adam Thomas: Worlds biggest hack. Dont ask and dont touch.
 				var options = valueAccessor();
@@ -612,15 +614,15 @@
 					ckcounts[element.id].remove();
 				}
 
-
 				var ck = $('#ck-'+ko.utils.unwrapObservable(options).id);
 				if (ck.length < 1) {
 					ck = $("<div></div>").attr('id','ck-'+ko.utils.unwrapObservable(options).id);
 					$(element).after(ck);
 				}
+				CKEDITOR.config.autoParagraph = false;
 				var editor = CKEDITOR.appendTo( ck[0], config, ko.utils.unwrapObservable(options.value));
 				$(element).hide();
-				editor.on('key', function (o) {
+				editor.on('change', function (o) {
 					console.log("CHANGE");
 					ckcounts[element.id].blockReset = true;
 					$(element).html(o.editor.getData());
@@ -630,13 +632,7 @@
 					window.admin.resizePage();
 				});
 
-
 				ckcounts[element.id] = ck;
-
-				clearTimeout(window.cktimeout);
-				window.cktimeout = setTimeout(function () {
-					$('head').append('<style>div.wysiwyg { display: block !important; }</style>');
-				}, 1000)
 
 			}
 
