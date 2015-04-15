@@ -7,7 +7,8 @@ CKEDITOR.editorConfig = function( config ) {
 	
 	// %REMOVE_START%
 	// The configuration options below are needed when running CKEditor from source files.
-	config.plugins = 'basicstyles,dialogui,dialog,clipboard,button,toolbar,enterkey,entities,floatingspace,wysiwygarea,indent,indentlist,fakeobjects,link,list,undo,onchange,xml,ajax,sourcearea';
+	config.plugins = 'basicstyles,dialogui,dialog,clipboard,button,toolbar,enterkey,entities,floatingspace,wysiwygarea,indent,indentlist,fakeobjects,link,list,undo,onchange,xml,ajax,sourcearea,panel,floatpanel,listblock,richcombo,format';
+
 	config.skin = 'moono-dark';
 	// %REMOVE_END%
 
@@ -38,4 +39,6 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Dialog windows are also simplified.
 	config.removeDialogTabs = 'link:advanced';
+
+	config.format_tags = 'p;h2;h3';
 };
