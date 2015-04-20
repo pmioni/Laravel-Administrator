@@ -611,7 +611,6 @@
 				var ck = $('#ck-'+ko.utils.unwrapObservable(options).id);
 				ck = $("<div></div>").attr('id','ck-'+ko.utils.unwrapObservable(options).id);
 				$(element).after(ck);
-				console.log("inserted");
 				CKEDITOR.config.autoParagraph = false;
 				var editor = CKEDITOR.appendTo(ck[0]);
 				$(element).hide();
@@ -625,8 +624,8 @@
 					this.setData(ckcounts[element.id].valueToInsert);
 				});
 
-				editor.on('change', function () {
-					$(element).html(this.getData());
+				editor.on('change', function (o) {
+					valueAccessor().value(o.editor.getData());
 				});
 
 
@@ -634,7 +633,7 @@
 
 			if (ckcounts[element.id] && ko.utils.unwrapObservable(options.value) !== "") {
 				ckcounts[element.id].valueToInsert = ko.utils.unwrapObservable(options.value);
-				ckcounts[element.id].editor.setData(ckcounts[element.id].valueToInsert);
+				//ckcounts[element.id].editor.setData(ckcounts[element.id].valueToInsert);
 			}
 
 
