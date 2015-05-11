@@ -352,10 +352,11 @@
 			 */
 			clickItem: function(id)
 			{
-				if (!this.loadingItem() && this.activeItem() !== id && this.actionPermissions.view)
+				window.location = route + this.modelName() + '/' + id;
+				/*if (!this.loadingItem() && this.activeItem() !== id && this.actionPermissions.view)
 				{
 					History.pushState({modelName: this.modelName(), id: id}, null, route + this.modelName() + '/' + id);
-				}
+				}*/
 			},
 
 			/**
@@ -510,15 +511,16 @@
 			 */
 			clearItem: function()
 			{
-				this.freezeForm(false);
+				/*this.freezeForm(false);
 				this.statusMessage('');
 				this.statusMessageType('');
 				this.itemLink(null);
 				this.itemLoadingId(null);
 				this.activeItem(null);
-				this.lastItem = null;
+				this.lastItem = null;*/
 
 				window.ckcounts = {};
+				window.location = route + this.modelName();
 			},
 
 			/**
@@ -1364,8 +1366,8 @@
 			//clicking the new item button
 			$('#content').on('click', 'div.results_header a.new_item', function(e)
 			{
-				e.preventDefault();
-				History.pushState({modelName: self.viewModel.modelName(), id: 0}, null, route + self.viewModel.modelName() + '/new');
+				//e.preventDefault();
+				//History.pushState({modelName: self.viewModel.modelName(), id: 0}, null, route + self.viewModel.modelName() + '/new');
 			});
 
 			//resizing the window

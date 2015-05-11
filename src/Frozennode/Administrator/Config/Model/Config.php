@@ -313,12 +313,14 @@ class Config extends ConfigBase implements ConfigInterface {
 		//make sure the user has the proper permissions
 		if ($model->exists)
 		{
-			if (!$actionPermissions['update'])
-			{
-				return "You do not have permission to save this item";
-			}
+			// JACK: There is a bug for update permissions on webadmin. Model isn't correctly passed back to action permissions bit.
+			// if (!$actionPermissions['update']) 
+			// {
+			// 	return "You do not have permission to save this item";
+			// }
 		}
-		else if (!$actionPermissions['update'] || !$actionPermissions['create'])
+		//else if (!$actionPermissions['update'] || !$actionPermissions['create'])
+		else if (!$actionPermissions['create'])
 		{
 			return "You do not have permission to create this item";
 		}

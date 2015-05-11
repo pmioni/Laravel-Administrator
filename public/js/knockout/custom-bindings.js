@@ -1,6 +1,8 @@
 (function($){
 
 	window.ckcounts = {};
+	window.cktimeout;
+	window.firstInit = false;
 
 	/**
 	 * For the item form transition
@@ -536,6 +538,9 @@
 	ko.bindingHandlers.wysiwyg = {
 		init: function (element, valueAccessor, allBindingsAccessor, context)
 		{
+
+
+
 		/*	console.log("INIT");
 			var options = valueAccessor();
 			console.log($(element));
@@ -600,38 +605,84 @@
 
 		update: function (element, valueAccessor, allBindingsAccessor, context)
 		{
-			if(!ckcounts[element.id] || (ckcounts[element.id] && !ckcounts[element.id].blockReset)) {
 
+			var options = valueAccessor();
+			if (ko.utils.unwrapObservable(options).id !== "" && $('#ck-'+ko.utils.unwrapObservable(options).id).length == 0) {
+				var ck = $('#ck-'+ko.utils.unwrapObservable(options).id);
+				ck = $("<div></div>").attr('id','ck-'+ko.utils.unwrapObservable(options).id);
+				$(element).after(ck);
+				CKEDITOR.config.autoParagraph = false;
+				var editor = CKEDITOR.appendTo(ck[0]);
+				$(element).hide();
+
+				ckcounts[element.id] = {
+					editor: editor,
+					element: ck
+				}
+
+				editor.on('instanceReady', function() {
+					this.setData(ckcounts[element.id].valueToInsert);
+				});
+
+				editor.on('change', function (o) {
+					valueAccessor().value(o.editor.getData());
+				});
+
+
+			}
+
+			if (ckcounts[element.id] && ko.utils.unwrapObservable(options.value) !== "") {
+				ckcounts[element.id].valueToInsert = ko.utils.unwrapObservable(options.value);
+				//ckcounts[element.id].editor.setData(ckcounts[element.id].valueToInsert);
+			}
+
+
+
+			/*console.log("init",ckcounts);
+
+
+
+			console.log("update",ckcounts);
+			var options = valueAccessor();
+			ckcounts[element.id].editor.setData(ko.utils.unwrapObservable(options.value));*/
+
+
+		/*	console.log("log1", ckcounts);
+			console.log("log2",ko.utils.unwrapObservable(valueAccessor().value) );
+			if(!ckcounts[element.id] || (ckcounts[element.id] && !ckcounts[element.id].blockReset)) {
+				console.log("log3","if passed");
 				// Adam Thomas: Worlds biggest hack. Dont ask and dont touch.
 				var options = valueAccessor();
 				$(element).html(ko.utils.unwrapObservable(options.value));
 				var config = {};
 
-				if(ckcounts[element.id] ) {
+				if(ckcounts[element.id]  ) {
 					ckcounts[element.id].remove();
 				}
-
 
 				var ck = $('#ck-'+ko.utils.unwrapObservable(options).id);
 				if (ck.length < 1) {
 					ck = $("<div></div>").attr('id','ck-'+ko.utils.unwrapObservable(options).id);
 					$(element).after(ck);
 				}
+				CKEDITOR.config.autoParagraph = false;
 				var editor = CKEDITOR.appendTo( ck[0], config, ko.utils.unwrapObservable(options.value));
 				$(element).hide();
-				editor.on('change', function (o) {
+				editor.on('focus', function () {
 					ckcounts[element.id].blockReset = true;
+				});
+				editor.on('change', function (o) {
+					console.log("CHANGE", o);
 					$(element).html(o.editor.getData());
 					valueAccessor().value(o.editor.getData());
 				});
 				editor.on('loaded', function() {
 					window.admin.resizePage();
 				});
-
-
 				ckcounts[element.id] = ck;
 
-			}
+console.log("log4",ckcounts);
+			}*/
 
 
 
