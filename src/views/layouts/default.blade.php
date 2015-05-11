@@ -6,6 +6,12 @@
 	<title>{{ Config::get('administrator::administrator.title') }}</title>
 
 	@foreach ($css as $url)
+    	<?php
+        if (App::environment() == 'production')
+        {
+            $url = str_replace('http://', 'https://', $url);
+        }
+        ?>
 		<link href="{{$url}}" media="all" type="text/css" rel="stylesheet">
 	@endforeach
 
@@ -24,6 +30,12 @@
 	</div>
 
 	@foreach ($js as $url)
+	    <?php
+	    if (App::environment() == 'production')
+        {
+            $url = str_replace('http://', 'https://', $url);
+        }
+	    ?>
 		<script src="{{$url}}"></script>
 	@endforeach
 </body>
