@@ -44,7 +44,7 @@ class File extends Field {
 		//set the upload url to the proper route
 		$upload_url = $url->route($route, array($this->config->getOption('name'), $this->suppliedOptions['field_name']));
 
-		$this->suppliedOptions['upload_url'] = (App::environment() == 'production') ? str_replace('http://', 'https://', $upload_url) : $upload_url;
+		$this->suppliedOptions['upload_url'] = (\App::environment() == 'production') ? str_replace('http://', 'https://', $upload_url) : $upload_url;
 	}
 
 	/**
