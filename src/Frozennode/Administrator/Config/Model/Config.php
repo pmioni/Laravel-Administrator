@@ -314,7 +314,7 @@ class Config extends ConfigBase implements ConfigInterface {
 		if ($model->exists)
 		{
 			// JACK: There is a bug for update permissions on webadmin. Model isn't correctly passed back to action permissions bit.
-			// if (!$actionPermissions['update']) 
+			// if (!$actionPermissions['update'])
 			// {
 			// 	return "You do not have permission to save this item";
 			// }
@@ -330,9 +330,13 @@ class Config extends ConfigBase implements ConfigInterface {
 
 		//validate the model
 		$data = $model->exists ? $model->getDirty() : $model->getAttributes();
+
 		$validation_data = array_merge($data, $this->getRelationshipInputs($input, $fields));
+
 		$rules = $this->getModelValidationRules();
-		$rules = $model->exists ? array_intersect_key($rules, $validation_data) : $rules;
+
+        $rules = $model->exists ? array_intersect_key($rules, $validation_data) : $rules;
+
 		$messages = $this->getModelValidationMessages();
 		$validation = $this->validateData($validation_data, $rules, $messages);
 

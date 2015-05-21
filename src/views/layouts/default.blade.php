@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
+	<meta name="robots" content="noindex">
 	<title>{{ Config::get('administrator::administrator.title') }}</title>
 
 	@foreach ($css as $url)
