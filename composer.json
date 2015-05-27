@@ -1,18 +1,9 @@
 {
-	"name": "frozennode/administrator",
-	"description": "A database interface package for Laravel",
+	"name": "fbf/Laravel-Administrator",
+	"description": "A multilingual branch of a database interface package for Laravel",
 	"homepage": "http://administrator.frozennode.com",
 	"keywords": ["administrator", "admin", "database", "laravel-administrator", "laravel", "cms"],
 	"license": "MIT",
-	"authors": [
-		{
-			"name": "Jan Hartigan",
-			"email": "jan@frozennode.com"
-		}
-	],
-	"support": {
-		"issues": "https://github.com/FrozenNode/Laravel-Administrator/issues"
-	},
 	"require": {
 		"php": ">=5.4.0",
 		"laravel/framework": "5.*",
