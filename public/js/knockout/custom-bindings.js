@@ -3,7 +3,7 @@
 	window.ckcounts = {};
 	window.cktimeout;
 	window.firstInit = false;
-
+	window.ckignore = {};
 	/**
 	 * For the item form transition
 	 */
@@ -608,6 +608,15 @@
 
 			var options = valueAccessor();
 			if (ko.utils.unwrapObservable(options).id !== "" && $('#ck-'+ko.utils.unwrapObservable(options).id).length == 0) {
+				if(ckcounts[element.id]) {
+					ckcounts[element.id].editor.removeAllListeners();
+					CKEDITOR.remove(ckcounts[element.id].editor);
+				}
+				if(!ckignore[ko.utils.unwrapObservable(options).id]) {
+					ckignore[ko.utils.unwrapObservable(options).id] = true;
+					return;
+				}
+
 				var ck = $('#ck-'+ko.utils.unwrapObservable(options).id);
 				ck = $("<div></div>").attr('id','ck-'+ko.utils.unwrapObservable(options).id);
 				$(element).after(ck);
@@ -622,6 +631,7 @@
 
 				editor.on('instanceReady', function() {
 					this.setData(ckcounts[element.id].valueToInsert);
+					window.admin.resizePage();
 				});
 
 				editor.on('change', function (o) {
