@@ -6,11 +6,11 @@
 </div>
 
 <script type="text/javascript">
-	var site_url = "<?php echo ($app->environment('production') ? str_replace('http://', 'https://', url('/')) : url('/') ?>",
-		base_url = "<?php echo ($app->environment('production') ? str_replace('http://', 'https://', $baseUrl) : $baseUrl ?>/",
-		asset_url = "<?php echo ($app->environment('production') ? str_replace('http://', 'https://', $assetUrl) : $assetUrl ?>",
-		file_url = "<?php echo ($app->environment('production') ? str_replace('http://', 'https://', route('admin_display_file', array($config->getOption('name')))) :  route('admin_display_file', array($config->getOption('name'))) ?>",
-		rows_per_page_url = "<?php echo ($app->environment('production') ? str_replace('http://', 'https://', route('admin_rows_per_page', array($config->getOption('name')))) : route('admin_rows_per_page', array($config->getOption('name'))) ?>",
+	var site_url = "<?php echo $app->environment('production') ? str_replace('http://', 'https://', url('/')) : url('/') ?>",
+		base_url = "<?php echo $app->environment('production') ? str_replace('http://', 'https://', $baseUrl) : $baseUrl ?>/",
+		asset_url = "<?php echo $app->environment('production') ? str_replace('http://', 'https://', $assetUrl) : $assetUrl ?>",
+		file_url = "<?php echo $app->environment('production') ? str_replace('http://', 'https://', route('admin_display_file', array($config->getOption('name')))) :  route('admin_display_file', array($config->getOption('name'))) ?>",
+		rows_per_page_url = "<?php echo $app->environment('production') ? str_replace('http://', 'https://', route('admin_rows_per_page', array($config->getOption('name')))) : route('admin_rows_per_page', array($config->getOption('name'))) ?>",
 		route = "<?php echo $route ?>",
 		csrf = "<?php echo csrf_token() ?>",
 		language = "<?php echo config('app.locale') ?>",
