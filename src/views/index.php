@@ -78,9 +78,5 @@
 </script>
 
 <script id="filtersTemplate" type="text/html">
-<<<<<<< HEAD
-	<?php echo View::make("administrator::templates.filters")?>
-=======
 	<?php echo view("administrator::templates.filters")?>
->>>>>>> upstream/master
 </script>
