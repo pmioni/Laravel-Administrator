@@ -6,7 +6,7 @@
 </div>
 
 <script type="text/javascript">
-	var site_url = "<?php echo (A$app->environment('production') ? str_replace('http://', 'https://', url('/')) : url('/') ?>",
+	var site_url = "<?php echo ($app->environment('production') ? str_replace('http://', 'https://', url('/')) : url('/') ?>",
 		base_url = "<?php echo ($app->environment('production') ? str_replace('http://', 'https://', $baseUrl) : $baseUrl ?>/",
 		asset_url = "<?php echo ($app->environment('production') ? str_replace('http://', 'https://', $assetUrl) : $assetUrl ?>",
 		file_url = "<?php echo ($app->environment('production') ? str_replace('http://', 'https://', route('admin_display_file', array($config->getOption('name')))) :  route('admin_display_file', array($config->getOption('name'))) ?>",
