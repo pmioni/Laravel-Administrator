@@ -1,5 +1,63 @@
 ## Changelog
 
+### 5.0.11
+- Bugfix: Had to make the middleware additon backwards compatable
+- Docs: Added doc updates
+
+### 5.0.10
+- Bugfix: L5.2 changed the way url() works so added url('/') instead
+- Added: Support for middleware additions to the Admin routes via the administrator config
+- Testfix: Fixed failing tests
+
+### 5.0.9
+- Bugfx: Fix for datetimepicker partially being covered by top menu  
+
+### 5.0.8
+- Bugfix: Rename Bool class to Boolean to fix PHP 7 
+- Bugfix: added missing custom attribute field
+
+### 5.0.7
+- Bugfix: Fixed boolean true bug 
+- Bugfix: Fixes a bug where soft deletes are not being properly detected in L5
+
+### 5.0.6
+- Added: Support for custom domains in the admin routes
+- Added: Ability to access the model from withinthe column output renderer
+- Added: Dynamic Form Request Validation
+
+### 5.0.5
+- Added: Added password field to the settings view
+- Added: Romanian Language
+- Added: Basic HasMany Implementation along with re-ordering support
+- Bugfix: Autocomplete working with default value
+- Bugfix: Adding missing session to Admin Controller
+- Bugfix: Fixed improper handling of filter value 0 for Enum/Text field
+- Docfix: Simplified the composer command in the install docs to match the packagist.org instuctions
+- Docfix: Changed the type definition for global_rows_per_page to int instead of Null|nt since Null causes divide by 0 error
+
+### 5.0.4
+- Testfix: fixing tests and js for gulp
+
+### 5.0.3
+- Cherry Picking v4.16.7
+
+### 5.0.2
+- Cherry Picking v4.16.6
+
+### 5.0.1
+- Bugfix: Fixing csrf token mismatches for some requests
+
+### 5.0.0
+- Upgraded to Laravel 5
+- New translations (az)
+
+### 4.16.7
+- Bugfix: Taking out model level validation errors if model update fails sine it was ardent only
+
+### 4.16.6
+- Bugfix: Resetting a date/datime to null
+- Bugfix: Added model level validation errors if model update fails
+
 ### 4.16.5
 - Bugfix: Another strange old bug where multiple search fields would do a where and instead of a where or
 

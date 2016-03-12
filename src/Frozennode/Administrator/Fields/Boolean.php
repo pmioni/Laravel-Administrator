@@ -3,7 +3,7 @@ namespace Frozennode\Administrator\Fields;
 
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
-class Bool extends Field {
+class Boolean extends Field {
 
 	/**
 	 * The value (used in filter)
@@ -38,7 +38,7 @@ class Bool extends Field {
 	 */
 	public function fillModel(&$model, $input)
 	{
-		$model->{$this->getOption('field_name')} = $input === 'true' || $input === '1' ? 1 : 0;
+		$model->{$this->getOption('field_name')} = $input === 'true' || $input === '1' || $input === true ? 1 : 0;
 	}
 
 	/**
