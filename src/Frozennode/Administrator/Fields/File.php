@@ -64,4 +64,27 @@ class File extends Field {
 
 		return $result[0];
 	}
+
+	/**
+	 * Takes in filepath of PDF upload and creates image from first page. Saved with filename for use on Font End
+	 */
+	public function generateThumbnail($path, $filename)
+	{
+		// Set to dynamic path
+		$otuputPath = public_path() . '/uploads/images/thumbs/';
+
+		// Use ImageMagick to get the first page of the PDF as an image
+		putenv("PATH=" . getenv('PATH') . ":/usr/local/bin/");
+        putenv("DYLD_LIBRARY_PATH=/usr/local/bin/");
+
+        $out = array();
+        $err = 0;
+
+		$sizes = Config::get('administrator::downloads.thumbnails');
+
+        foreach ($sizes as $size) {
+        	$run = exec('convert -resize ' . $size . ' "' . $path . '"[0] "' . $outputPath . $filename . '-' . $size . '.jpg"',$out,$err);
+        }
+
+	}
 }
