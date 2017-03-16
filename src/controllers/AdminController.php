@@ -437,7 +437,14 @@ class AdminController extends Controller
 		//get the model and the field object
 		$field = $fieldFactory->findField($fieldName);
 
-		return Response::JSON($field->doUpload());
+		$upload = $field->doUpload();
+
+		// For downloads we want to create a thumbnail image with each PDF uploaded
+		if ($modelName === 'downloads' && pathinfo($upload['path'], PATHINFO_EXTENSION) === 'pdf') {
+			$field->generateThumbnail($upload['path'], $upload['filename']);
+		}
+
+		return Response::JSON($upload);
 	}
 
 	/**
