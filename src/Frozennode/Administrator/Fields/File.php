@@ -2,6 +2,7 @@
 namespace Frozennode\Administrator\Fields;
 
 use Frozennode\Administrator\Includes\Multup;
+use Illuminate\Support\Facades\Config;
 
 class File extends Field {
 
