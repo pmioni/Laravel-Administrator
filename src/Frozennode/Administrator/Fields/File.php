@@ -71,7 +71,7 @@ class File extends Field {
 	public function generateThumbnail($path, $filename)
 	{
 		// Set to dynamic path
-		$otuputPath = public_path() . '/uploads/images/thumbs/';
+		$outputPath = public_path() . '/uploads/images/thumbs/';
 
 		// Use ImageMagick to get the first page of the PDF as an image
 		putenv("PATH=" . getenv('PATH') . ":/usr/local/bin/");
